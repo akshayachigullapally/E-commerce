@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { showToast, toastMessages } from '../utils/toast';
+import PasswordInput from '../components/PasswordInput';
 
 const ChangePassword = () => {
   const { user } = useAuth();
@@ -14,11 +15,6 @@ const ChangePassword = () => {
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [showPasswords, setShowPasswords] = useState({
-    current: false,
-    new: false,
-    confirm: false
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,13 +29,6 @@ const ChangePassword = () => {
         [name]: ''
       }));
     }
-  };
-
-  const togglePasswordVisibility = (field) => {
-    setShowPasswords(prev => ({
-      ...prev,
-      [field]: !prev[field]
-    }));
   };
 
   const validateForm = () => {
@@ -109,54 +98,6 @@ const ChangePassword = () => {
     }
   };
 
-  const PasswordField = ({ 
-    id, 
-    name, 
-    label, 
-    placeholder, 
-    value, 
-    error, 
-    showPassword, 
-    onToggle 
-  }) => (
-    <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700 mb-2">
-        {label}
-      </label>
-      <div className="relative">
-        <input
-          type={showPassword ? "text" : "password"}
-          id={id}
-          name={name}
-          value={value}
-          onChange={handleChange}
-          className={`w-full px-3 py-2 border rounded-md shadow-sm pr-10 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${
-            error ? 'border-red-300' : 'border-gray-300'
-          }`}
-          placeholder={placeholder}
-        />
-        <button
-          type="button"
-          onClick={onToggle}
-          className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-50 rounded-r-md transition-colors"
-        >
-          {showPassword ? (
-            <svg className="w-5 h-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
-            </svg>
-          ) : (
-            <svg className="w-5 h-5 text-gray-400 hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-          )}
-        </button>
-      </div>
-      {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
-      )}
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
@@ -188,37 +129,37 @@ const ChangePassword = () => {
                 </div>
               )}
 
-              <PasswordField
+              <PasswordInput
                 id="currentPassword"
                 name="currentPassword"
-                label="Current Password"
-                placeholder="Enter your current password"
                 value={formData.currentPassword}
+                onChange={handleChange}
+                placeholder="Enter your current password"
+                label="Current Password"
                 error={errors.currentPassword}
-                showPassword={showPasswords.current}
-                onToggle={() => togglePasswordVisibility('current')}
+                className="shadow-sm"
               />
 
-              <PasswordField
+              <PasswordInput
                 id="newPassword"
                 name="newPassword"
-                label="New Password"
-                placeholder="Enter your new password"
                 value={formData.newPassword}
+                onChange={handleChange}
+                placeholder="Enter your new password"
+                label="New Password"
                 error={errors.newPassword}
-                showPassword={showPasswords.new}
-                onToggle={() => togglePasswordVisibility('new')}
+                className="shadow-sm"
               />
 
-              <PasswordField
+              <PasswordInput
                 id="confirmPassword"
                 name="confirmPassword"
-                label="Confirm New Password"
-                placeholder="Confirm your new password"
                 value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm your new password"
+                label="Confirm New Password"
                 error={errors.confirmPassword}
-                showPassword={showPasswords.confirm}
-                onToggle={() => togglePasswordVisibility('confirm')}
+                className="shadow-sm"
               />
 
               {/* Submit Button */}
@@ -253,4 +194,4 @@ const ChangePassword = () => {
 };
 
 export default ChangePassword;
-             
+               
