@@ -77,7 +77,12 @@ VITE_API_BASE_URL=http://localhost:5000/api
 
 1. Create a new project on [Supabase](https://supabase.com/)
 2. Go to Settings > API to get your URL and anon key
-3. Update the `.env` files with your credentials
+3. **Disable Email Confirmation** (Important):
+   - Navigate to Authentication > Settings in your Supabase dashboard
+   - Find "Email Confirmation" setting
+   - Turn OFF "Enable email confirmations"
+   - Save the changes
+4. Update the `.env` file with your credentials
 
 #### Database Schema
 
@@ -247,23 +252,28 @@ The application uses vanilla CSS with:
    - Make sure your `.env` file exists in the server directory
    - Verify your Supabase credentials are correct
 
-2. **Images not loading**
+2. **Email confirmation required**
+   - Go to Supabase Dashboard > Authentication > Settings
+   - Disable "Enable email confirmations"
+   - Users will be able to sign in immediately after registration
+
+3. **Images not loading**
    - Check image URLs in your database
    - Fallback images are implemented for missing images
 
-3. **Cart not persisting**
+4. **Cart not persisting**
    - Ensure user authentication is working
    - Check Supabase connection
 
-4. **CORS errors**
+5. **CORS errors**
    - Verify `CORS_ORIGIN` in server `.env` matches your frontend URL
    - Check that both frontend and backend are running
 
-5. **API endpoint errors**
+6. **API endpoint errors**
    - Verify `VITE_API_BASE_URL` in client `.env` is correct
    - Ensure backend server is running on the correct port
 
-6. **Environment variables not loading**
+7. **Environment variables not loading**
    - Make sure `.env` files are in the correct directories
    - Restart your development servers after changing `.env` files
    - Use `VITE_` prefix for client-side environment variables
