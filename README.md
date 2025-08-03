@@ -53,8 +53,10 @@ Create a `.env` file in the server directory:
 
 ```env
 SUPABASE_URL=your_supabase_project_url
-SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_KEY=your_supabase_anon_key
 PORT=5000
+CORS_ORIGIN=http://localhost:3000
+NODE_ENV=development
 ```
 
 ### 3. Frontend Setup
@@ -64,11 +66,18 @@ cd ../client
 npm install
 ```
 
+Create a `.env` file in the client directory:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_API_BASE_URL=http://localhost:5000/api
+```
+
 ### 4. Supabase Configuration
 
 1. Create a new project on [Supabase](https://supabase.com/)
 2. Go to Settings > API to get your URL and anon key
-3. Update the `.env` file with your credentials
+3. Update the `.env` files with your credentials
 
 #### Database Schema
 
@@ -140,14 +149,18 @@ commerce/
 │   │   ├── components/     # Reusable components
 │   │   ├── context/        # React Context providers
 │   │   ├── pages/          # Page components
+│   │   ├── config/         # Configuration files
+│   │   ├── utils/          # Utility functions
 │   │   ├── App.js
 │   │   └── index.js
+│   ├── .env               # Environment variables
 │   └── package.json
 ├── server/                 # Node.js backend
 │   ├── config/            # Database configuration
 │   ├── routes/            # API routes
 │   ├── middleware/        # Custom middleware
 │   ├── server.js          # Main server file
+│   ├── .env              # Environment variables
 │   └── package.json
 └── README.md
 ```
@@ -163,6 +176,19 @@ commerce/
 - `npm start` - Start production server
 - `npm run dev` - Start development server with nodemon
 
+## 🌐 Environment Variables
+
+### Client (.env)
+- `VITE_API_URL` - Base URL for the backend server
+- `VITE_API_BASE_URL` - Base URL for API endpoints
+
+### Server (.env)
+- `SUPABASE_URL` - Your Supabase project URL
+- `SUPABASE_KEY` - Your Supabase anon key
+- `PORT` - Port for the server (default: 5000)
+- `CORS_ORIGIN` - Allowed origin for CORS (default: http://localhost:3000)
+- `NODE_ENV` - Environment (development/production)
+
 ## 🌟 Key Components
 
 ### Cart Context (`client/src/context/CartContext.jsx`)
@@ -172,6 +198,12 @@ Manages shopping cart state using React's useReducer hook:
 - Remove items from cart
 - Calculate totals
 - Persist cart data
+
+### API Configuration (`client/src/config/api.js`)
+Centralized API endpoint management:
+- Environment-based URL configuration
+- Consistent API endpoint definitions
+- Easy to modify for different environments
 
 ### Products Page (`client/src/pages/ProductsPage.jsx`)
 Main shopping interface featuring:
@@ -223,9 +255,18 @@ The application uses vanilla CSS with:
    - Ensure user authentication is working
    - Check Supabase connection
 
-4. **Port conflicts**
-   - Frontend runs on port 3000, backend on port 5000
-   - Change ports in package.json scripts if needed
+4. **CORS errors**
+   - Verify `CORS_ORIGIN` in server `.env` matches your frontend URL
+   - Check that both frontend and backend are running
+
+5. **API endpoint errors**
+   - Verify `VITE_API_BASE_URL` in client `.env` is correct
+   - Ensure backend server is running on the correct port
+
+6. **Environment variables not loading**
+   - Make sure `.env` files are in the correct directories
+   - Restart your development servers after changing `.env` files
+   - Use `VITE_` prefix for client-side environment variables
 
 ## 🤝 Contributing
 
@@ -250,8 +291,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have any questions or run into issues, please:
 1. Check the troubleshooting section above
-2. Search existing issues in the repository
-3. Create a new issue with detailed information
+2. Verify your environment variables are set correctly
+3. Search existing issues in the repository
+4. Create a new issue with detailed information
 
 ---
 

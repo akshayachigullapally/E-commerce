@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
+import { API_ENDPOINTS } from '../config/api';
 import './ProductsPage.css';
 
 const ProductsPage = () => {
@@ -31,75 +32,81 @@ const ProductsPage = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(API_ENDPOINTS.products);
       const data = await response.json();
       
       if (response.ok) {
         setProducts(data.products || []);
       } else {
         console.error('Error fetching products:', data.error);
-        // Fallback to mock data if API fails
+        // Fallback to mock data with better image URLs
         const mockProducts = [
           {
             id: 1,
             name: 'Awesome Gold Computer',
             price: 99.69,
-            image: 'https://via.placeholder.com/300x200/FFD700/000000?text=Gold+Computer',
+            image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop',
             category: 'Electronics',
             stock: 12,
-            rating: 4.3
+            rating: 4.3,
+            description: 'New tan Computer with ergonomic design for...'
           },
           {
             id: 2,
             name: 'Awesome Marble Shirt',
             price: 121.39,
-            image: 'https://via.placeholder.com/300x200/F5F5DC/000000?text=Marble+Shirt',
+            image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop',
             category: 'Clothing',
             stock: 15,
-            rating: 4.8
+            rating: 4.8,
+            description: 'Stylish Shirt designed to make you stand out wit...'
           },
           {
             id: 3,
             name: 'Awesome Steel Table',
             price: 139.25,
-            image: 'https://via.placeholder.com/300x200/C0C0C0/000000?text=Steel+Table',
+            image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop',
             category: 'Home & Garden',
             stock: 28,
-            rating: 3.8
+            rating: 3.8,
+            description: 'Savor the juicy essence in our table, designed...'
           },
           {
             id: 4,
             name: 'Awesome Steel Soap',
             price: 77.09,
-            image: 'https://via.placeholder.com/300x200/87CEEB/000000?text=Steel+Soap',
+            image: 'https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop',
             category: 'Beauty',
             stock: 25,
-            rating: 4.1
+            rating: 4.1,
+            description: 'Savor the rich essence in our Soap, designed for...'
           }
         ];
         setProducts(mockProducts);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
-      // Fallback to mock data
+      // Enhanced fallback with proper images
       const mockProducts = [
         {
           id: 1,
           name: 'Awesome Gold Computer',
           price: 99.69,
-          image: 'https://via.placeholder.com/300x200/FFD700/000000?text=Gold+Computer',
+          image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop',
           category: 'Electronics',
           stock: 12,
-          rating: 4.3
+          rating: 4.3,
+          description: 'New tan Computer with ergonomic design for...'
         },
         {
           id: 2,
           name: 'Awesome Marble Shirt',
           price: 121.39,
-          image: 'https://via.placeholder.com/300x200/F5F5DC/000000?text=Marble+Shirt',
+          image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop',
           category: 'Clothing',
           stock: 15,
-          rating: 4.8
+          rating: 4.8,
+          description: 'Stylish Shirt designed to make you stand out wit...'
         }
       ];
       setProducts(mockProducts);
@@ -110,7 +117,7 @@ const ProductsPage = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/categories');
+      const response = await fetch(API_ENDPOINTS.categories);
       const data = await response.json();
       
       if (response.ok) {
@@ -250,10 +257,12 @@ const ProductsPage = () => {
               <div key={product.id} className="product-card">
                 <div className="product-image">
                   <img 
-                    src={product.image} 
+                    src={product.image || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop'} 
                     alt={product.name}
+                    loading="lazy"
                     onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/300x200/CCCCCC/000000?text=No+Image';
+                      e.target.onerror = null;
+                      e.target.src = 'https://via.placeholder.com/400x300/f0f0f0/666666?text=Product+Image';
                     }}
                   />
                   <div className="product-category">{product.category}</div>
@@ -261,6 +270,9 @@ const ProductsPage = () => {
                 
                 <div className="product-info">
                   <h3 className="product-name">{product.name}</h3>
+                  {product.description && (
+                    <p className="product-description">{product.description}</p>
+                  )}
                   <div className="product-rating">
                     <span className="stars">★ {product.rating}</span>
                   </div>
