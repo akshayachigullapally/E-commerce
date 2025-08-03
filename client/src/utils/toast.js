@@ -28,6 +28,8 @@ export const toastMessages = {
     registerError: "Failed to create account. Please try again.",
     logoutSuccess: "Successfully logged out!",
     logoutError: "Failed to log out. Please try again.",
+    passwordChanged: "Password updated successfully!",
+    passwordError: "Failed to update password. Please try again.",
   },
   cart: {
     addSuccess: "Item added to cart!",
